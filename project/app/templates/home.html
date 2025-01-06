@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 20%;
+            background: linear-gradient(135deg, #1f4037, #99f2c8);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            box-shadow: 3px 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            font-size: 18px;
+            margin: 10px 0;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        .sidebar form {
+            display: flex;
+            flex-direction: column;
+            margin-top: 20px;
+        }
+
+        .sidebar label {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .sidebar input[type="file"] {
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+        }
+
+        .sidebar input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .sidebar button {
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .sidebar button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        /* Main content styling */
+        .main {
+            width: 80%;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .result-container {
+            width: 90%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: scaleUp 0.5s ease-in-out;
+        }
+
+        .result-container img,
+        .result-container video {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleUp {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li>Pose Detection</li>
+            <li>Object Detection</li>
+            <li>Segmentation</li>
+            <li>More Options...</li>
+        </ul>
+        <form id="detectionForm">
+            <label for="mediaInput">Upload Media:</label>
+            <input type="file" id="mediaInput" name="media">
+            <label>Options:</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                <!-- 80 checkboxes -->
+                <div style="width: 20%; display: flex; align-items: center;">
+                    <input type="checkbox" id="option1" name="option1">
+                    <label for="option1">Option 1</label>
+                </div>
+                <!-- Repeat similar blocks -->
+            </div>
+            <button type="submit">Detect</button>
+        </form>
+    </div>
+
+    <div class="main">
+        <div class="result-container" id="resultContainer">
+            <h2>Detection Result:</h2>
+            <img src="https://via.placeholder.com/800x400" alt="Detection Result">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("detectionForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const resultContainer = document.getElementById("resultContainer");
+            resultContainer.style.animation = "scaleUp 0.5s ease-in-out";
+        });
+    </script>
+</body>
+</html>

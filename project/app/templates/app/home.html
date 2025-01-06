@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Predict</title>
+</head>
+<body>
+    <h1>Upload Image and Select Categories</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload and Predict</button>
+    </form>
+
+    {% if output_image %}
+        <h3>Prediction Result:</h3>
+        <img src="{{ output_image }}" alt="Predicted Image" />
+    {% elif error_message %}
+        <h3 style="color: red;">{{ error_message }}</h3>
+    {% endif %}
+</body>
+</html>

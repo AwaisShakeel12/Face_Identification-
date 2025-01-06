@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 25%;
+            background: linear-gradient(135deg, #4a90e2, #8a2be2);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 3px 0 5px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+
+        .sidebar ul li {
+            font-size: 18px;
+            margin: 10px 0;
+            padding: 8px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Form styling */
+        .upload-form {
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            color: black;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .upload-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .upload-form label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .upload-form input[type="file"] {
+            margin-bottom: 15px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .checkbox-container div {
+            width: 45%;
+        }
+
+        .upload-form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .upload-form button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+        /* Main content styling */
+        .main {
+            width: 75%;
+            background: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .result-container {
+            width: 80%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .result-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        /* Scroll styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li>Pose Detection</li>
+            <li>Object Detection</li>
+            <li>Segmentation</li>
+            <li>More Options...</li>
+        </ul>
+
+        <div class="upload-form">
+            <form id="detectionForm">
+                <label for="mediaInput">Upload Media:</label>
+                <input type="file" id="mediaInput" name="image" required>
+
+                <label>Select objects to detect:</label>
+                <div class="checkbox-container">
+                    <!-- Dynamically generating 80 checkboxes -->
+                    <!-- Example -->
+                    <div><input type="checkbox" id="class1" value="class1"><label for="class1">Class 1</label></div>
+                    <div><input type="checkbox" id="class2" value="class2"><label for="class2">Class 2</label></div>
+                    <!-- Repeat this up to 80 -->
+                    <div><input type="checkbox" id="class80" value="class80"><label for="class80">Class 80</label></div>
+                </div>
+
+                <button type="submit">Detect</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="main">
+        <div class="result-container" id="resultContainer">
+            <h2>Detection Result:</h2>
+            <img src="https://via.placeholder.com/800x600" alt="Detection Result">
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("detectionForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            alert("Form submitted!");
+        });
+    </script>
+</body>
+</html>

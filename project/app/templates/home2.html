@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Object Detection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Sidebar styling */
+        .sidebar {
+            width: 20%;
+            background: linear-gradient(135deg, #4a90e2, #8a2be2);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+            box-shadow: 3px 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .sidebar h2 {
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            font-size: 18px;
+            margin: 10px 0;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .sidebar ul li:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Main content styling */
+        .main {
+            width: 80%;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        /* Animated bubble background */
+        .bubble {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: rgba(0, 174, 239, 0.5);
+            border-radius: 50%;
+            animation: move 10s infinite ease-in-out;
+        }
+
+        .bubble:nth-child(1) {
+            top: 10%;
+            left: 15%;
+            animation-duration: 15s;
+        }
+
+        .bubble:nth-child(2) {
+            top: 40%;
+            left: 25%;
+            animation-duration: 10s;
+        }
+
+        .bubble:nth-child(3) {
+            top: 70%;
+            left: 50%;
+            animation-duration: 12s;
+        }
+
+        .bubble:nth-child(4) {
+            top: 20%;
+            left: 70%;
+            animation-duration: 18s;
+        }
+
+        .bubble:nth-child(5) {
+            top: 60%;
+            left: 90%;
+            animation-duration: 14s;
+        }
+
+        @keyframes move {
+            0% {
+                transform: scale(1) translateY(0);
+            }
+            50% {
+                transform: scale(1.2) translateY(-30px);
+            }
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .upload-form {
+            margin-top: 100px;
+            width: 60%;
+            max-height: 60%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow-y: hidden;
+         
+        }
+
+        .upload-form form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .upload-form label {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+
+        .upload-form input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        .upload-form button {
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .upload-form button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+
+
+        .upload-form {
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            color: black;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        .upload-form form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .upload-form label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .upload-form input[type="file"] {
+            margin-bottom: 15px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-height: 50vh;
+            overflow-y: auto;
+        }
+
+        .checkbox-container div {
+            width: 45%;
+        }
+
+        .upload-form button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .upload-form button:hover {
+            background-color: #45a049;
+            transform: scale(1.05);
+        }
+
+
+
+
+        .main {
+            width: 100%;
+            background:transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            padding: 20px;
+        }
+
+        .result-container {
+            width: 90%;
+            background: transparent;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            animation: scaleUp 0.5s ease-in-out;
+        }
+
+        .result-container img,
+        .result-container video {
+            max-width: 100%;
+            height: 400px;
+            border-radius: 10px;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes scaleUp {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a style="text-decoration: none; color: white;" href="{% url 'detect_objects' %}">Object Detection</a> </li>
+            <li><a style="text-decoration: none; color: white;" href="{% url 'pose_view' %}">Pose Detection</a> </li>
+            <li><a style="text-decoration: none; color: white;" href="{% url 'class_view' %}">Classification</a></li>
+            <li><a style="text-decoration: none; color: white;" href="{% url 'segmentation_view' %}">Segmentation</a></li>
+           
+        </ul>
+
+        <div class="upload-form">
+            <form id="detectionForm" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+          
+            
+                <button style="margin-bottom: 100px;" type="submit">Detect</button>
+
+            </form>
+        </div>
+
+
+    </div>
+
+    <div class="main">
+        <!-- Bubbles for animated background -->
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+
+        <!-- Form Section -->
+
+        <div class="main">
+            <div class="result-container" id="resultContainer">
+                <h2>Detection</h2>
+                {% if detection and detection.result_image %}
+                <img class="r-image" src="{{ detection.result_image.url }}" alt="Detection Result">
+                {% else %}
+                <img class="r-image" src="media\Computer vision.jpg" alt="Detection Result">
+                {% endif %}
+            </div>
+        </div>
+    
+    </div>
+
+    <script>
+   
+    </script>
+</body>
+</html>
